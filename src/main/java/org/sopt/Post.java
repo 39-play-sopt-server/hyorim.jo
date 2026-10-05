@@ -1,8 +1,8 @@
 package org.sopt;
 
 public class Post {
-    String title;
-    String content;
+    private String title;
+    private String content;
 
     public Post(String title, String content) {
         this.title = title;
