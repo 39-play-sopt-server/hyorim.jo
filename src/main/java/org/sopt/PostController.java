@@ -15,11 +15,12 @@ public class PostController {
         while (true) {
             view.printMenu();
             int command = view.readCommand();
+
             switch (command) {
-                case 1 -> postPost();
+                case 1 -> createPost();
                 case 2 -> getPosts();
                 case 3 -> getPost();
-                case 4 -> patchPost();
+                case 4 -> updatePost();
                 case 5 -> deletePost();
                 case 6 -> {
                     view.printMessage("프로그램을 종료합니다.");
@@ -31,7 +32,7 @@ public class PostController {
     }
 
     // 게시글 작성
-    public void postPost() {
+    private void createPost() {
         String title = view.readTitle();
         String content = view.readContent();
         posts.add(new Post(title, content));
@@ -67,7 +68,7 @@ public class PostController {
     }
 
     // 게시글 수정
-    public void patchPost() {
+    private void updatePost() {
         if (posts.isEmpty()) {
             view.printMessage("게시글이 없습니다.");
             return;
@@ -84,7 +85,6 @@ public class PostController {
         String newContent = view.readContent();
 
         Post post = posts.get(index);
-
         post.updatePost(newTitle, newContent);
 
         view.printMessage("게시글이 수정되었습니다.");
