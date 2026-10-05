@@ -45,9 +45,8 @@ public class PostController {
             view.printMessage("게시글이 없습니다.");
             return;
         }
-        for (int i = 0; i < posts.size(); i++) {
-            view.printMessage((i + 1) + ". " + posts.get(i).getTitle());
-        }
+
+        view.printPosts(posts);
     }
 
     // 게시글 상세 조회
