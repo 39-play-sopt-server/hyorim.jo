@@ -1,4 +1,6 @@
-package org.sopt;
+package org.sopt.client;
+
+import org.sopt.post.domain.Post;
 
 import java.util.List;
 import java.util.Scanner;
@@ -38,8 +40,8 @@ public class PostView {
 
     public void printPosts(List<Post> posts) {
         System.out.println("\n=== 게시글 목록 ===");
-        for (int i = 0; i < posts.size(); i++) {
-            System.out.println((i + 1) + ". " + posts.get(i).getTitle());
+        for (Post post : posts) {
+            System.out.println(post.getId() + ". " + post.getTitle());
         }
     }
 

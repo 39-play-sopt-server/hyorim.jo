@@ -1,12 +1,21 @@
-package org.sopt;
+package org.sopt.post.domain;
 
 public class Post {
+    private int id;
     private String title;
     private String content;
 
     public Post(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -17,7 +26,7 @@ public class Post {
         return this.content;
     }
 
-    // 함수 하나로 제목과 내용 수정 모두에 대응하기 위해서 게시글을 수정하는 함수는 Post 단위로 작성
+    // Post 수정은 제목과 내용을 모두 입력 받는다.
     public void updatePost(String title, String content) {
         this.title = title;
         this.content = content;
