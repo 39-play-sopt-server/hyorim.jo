@@ -1,16 +1,13 @@
 package org.sopt.client;
 
+import org.sopt.Server;
 import org.sopt.post.controller.PostController;
-import org.sopt.post.repository.PostRepository;
-import org.sopt.post.service.PostService;
 
 public class Main {
 
     public static void main(String[] args) {
         PostView view = new PostView();
-        PostRepository repository = new PostRepository();
-        PostService service = new PostService(repository);
-        PostController controller = new PostController(service);
+        PostController controller = new Server().controller();
 
         while (true) {
             view.printMenu();
