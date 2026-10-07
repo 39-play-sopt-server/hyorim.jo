@@ -10,9 +10,10 @@ public class PostRepository {
     private final Map<Integer, Post> posts = new LinkedHashMap<>();
     private int sequence = 0;
 
-    public void save(Post post) {
+    public Post save(Post post) {
         post.setId(autoIncrementId());
         posts.put(post.getId(), post);
+        return post;
     }
 
     public List<Post> findAll() {

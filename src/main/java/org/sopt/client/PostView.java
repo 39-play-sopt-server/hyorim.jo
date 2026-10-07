@@ -1,6 +1,7 @@
 package org.sopt.client;
 
-import org.sopt.post.domain.Post;
+import org.sopt.global.response.ApiResponse;
+import org.sopt.post.dto.PostResponse;
 
 import java.util.List;
 import java.util.Scanner;
@@ -38,17 +39,31 @@ public class PostView {
         return Integer.parseInt(scanner.nextLine());
     }
 
-    public void printPosts(List<Post> posts) {
+    public void printPosts(ApiResponse<List<PostResponse>> posts) {
+        if (!posts.isSuccess()) {
+            printMessage(posts);
+            return;
+        }
+
         System.out.println("\n=== 게시글 목록 ===");
-        for (Post post : posts) {
-            System.out.println(post.getId() + ". " + post.getTitle());
+        for (PostResponse post : posts.data()) {
+            System.out.println(post.id() + ". " + post.title());
         }
     }
 
-    public void printPost(Post post) {
+    public void printPost(ApiResponse<PostResponse> post) {
+        if (!post.isSuccess()) {
+            printMessage(post);
+            return;
+        }
+
         System.out.println("\n=== 게시글 ===");
-        System.out.println("제목: " + post.getTitle());
-        System.out.println("내용: " + post.getContent());
+        System.out.println("제목: " + post.data().title());
+        System.out.println("내용: " + post.data().content());
+    }
+
+    public void printMessage(ApiResponse<?> message) {
+        System.out.println(message.message());
     }
 
     public void printMessage(String message) {

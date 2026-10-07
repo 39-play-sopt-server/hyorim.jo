@@ -1,6 +1,9 @@
 package org.sopt.post.service;
 
+import org.sopt.global.exception.GeneralException;
+import org.sopt.post.code.PostErrorCode;
 import org.sopt.post.domain.Post;
+import org.sopt.post.dto.PostResponse;
 import org.sopt.post.repository.PostRepository;
 
 import java.util.List;
@@ -13,28 +16,42 @@ public class PostService {
     }
 
     // 게시글 작성
-    public void createPost(String title, String content) {
-        postRepository.save(new Post(title, content));
+    public PostResponse createPost(String title, String content) {
+        if (title == null || title.isBlank()) {
+            throw new GeneralException(PostErrorCode.POST_TITLE_EMPTY);
+        }
+        if (content == null || content.isBlank()) {
+            throw new GeneralException(PostErrorCode.POST_CONTENT_EMPTY);
+        }
+
+        return PostResponse.from(postRepository.save(new Post(title, content)));
     }
 
     // 게시글 목록 조회
-    public List<Post> getPosts() {
-        return postRepository.findAll();
+    public List<PostResponse> getPosts() {
+        return postRepository.findAll().stream().map(PostResponse::from).toList();
     }
 
     // 게시글 상세 조회
-    public Post getPost(int postId) {
+    public PostResponse getPost(int postId) {
         if (postRepository.findById(postId) == null) {
-            throw new IllegalArgumentException("존재하지 않는 게시글입니다.");
+            throw new GeneralException(PostErrorCode.POST_NOT_FOUND);
         }
 
-        return postRepository.findById(postId);
+        return PostResponse.from(postRepository.findById(postId));
     }
 
     // 게시글 수정
     public void updatePost(int postId, String title, String content) {
         if (postRepository.findById(postId) == null) {
-            throw new IllegalArgumentException("존재하지 않는 게시글입니다.");
+            throw new GeneralException(PostErrorCode.POST_NOT_FOUND);
+        }
+
+        if (title == null || title.isBlank()) {
+            throw new GeneralException(PostErrorCode.POST_TITLE_EMPTY);
+        }
+        if (content == null || content.isBlank()) {
+            throw new GeneralException(PostErrorCode.POST_CONTENT_EMPTY);
         }
 
         postRepository.findById(postId).updatePost(title, content);
@@ -43,7 +60,7 @@ public class PostService {
     // 게시글 삭제
     public void deletePost(int postId) {
         if (postRepository.findById(postId) == null) {
-            throw new IllegalArgumentException("존재하지 않는 게시글입니다.");
+            throw new GeneralException(PostErrorCode.POST_NOT_FOUND);
         }
 
         postRepository.deleteById(postId);

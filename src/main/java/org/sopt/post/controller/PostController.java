@@ -1,6 +1,9 @@
 package org.sopt.post.controller;
 
-import org.sopt.post.domain.Post;
+import org.sopt.global.code.CommonErrorCode;
+import org.sopt.global.exception.GeneralException;
+import org.sopt.global.response.ApiResponse;
+import org.sopt.post.dto.PostResponse;
 import org.sopt.post.service.PostService;
 
 import java.util.List;
@@ -12,23 +15,55 @@ public class PostController {
         this.service = service;
     }
 
-    public void createPost(String title, String content) {
-        service.createPost(title, content);
+    public ApiResponse<PostResponse> createPost(String title, String content) {
+        try {
+            return ApiResponse.created(service.createPost(title, content));
+        } catch (GeneralException e) {
+            return ApiResponse.fail(e.getErrorCode());
+        } catch (Exception e) {
+            return ApiResponse.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    public List<Post> getPosts() {
-        return service.getPosts();
+    public ApiResponse<List<PostResponse>> getPosts() {
+        try {
+            return ApiResponse.ok(service.getPosts());
+        } catch (GeneralException e) {
+            return ApiResponse.fail(e.getErrorCode());
+        } catch (Exception e) {
+            return ApiResponse.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    public Post getPost(int postId) {
-        return service.getPost(postId);
+    public ApiResponse<PostResponse> getPost(int postId) {
+        try {
+            return ApiResponse.ok(service.getPost(postId));
+        } catch (GeneralException e) {
+            return ApiResponse.fail(e.getErrorCode());
+        } catch (Exception e) {
+            return ApiResponse.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    public void updatePost(int postId, String title, String content) {
-        service.updatePost(postId, title, content);
+    public ApiResponse<Void> updatePost(int postId, String title, String content) {
+        try {
+            service.updatePost(postId, title, content);
+            return ApiResponse.ok();
+        } catch (GeneralException e) {
+            return ApiResponse.fail(e.getErrorCode());
+        } catch (Exception e) {
+            return ApiResponse.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    public void deletePost(int postId) {
-        service.deletePost(postId);
+    public ApiResponse<Void> deletePost(int postId) {
+        try {
+            service.deletePost(postId);
+            return ApiResponse.ok();
+        } catch (GeneralException e) {
+            return ApiResponse.fail(e.getErrorCode());
+        } catch (Exception e) {
+            return ApiResponse.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 }
