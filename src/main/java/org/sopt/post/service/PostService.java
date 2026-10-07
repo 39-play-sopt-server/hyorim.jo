@@ -2,6 +2,7 @@ package org.sopt.post.service;
 
 import org.sopt.global.exception.GeneralException;
 import org.sopt.post.code.PostErrorCode;
+import org.sopt.post.domain.Category;
 import org.sopt.post.domain.Post;
 import org.sopt.post.dto.PostResponse;
 import org.sopt.post.repository.PostRepository;
@@ -16,15 +17,25 @@ public class PostService {
     }
 
     // 게시글 작성
-    public PostResponse createPost(String title, String content) {
+    public PostResponse createPost(String category, String title, String content, String author) {
         if (title == null || title.isBlank()) {
             throw new GeneralException(PostErrorCode.POST_TITLE_EMPTY);
         }
         if (content == null || content.isBlank()) {
             throw new GeneralException(PostErrorCode.POST_CONTENT_EMPTY);
         }
+        if (author == null || author.isBlank()) {
+            throw new GeneralException(PostErrorCode.POST_AUTHOR_EMPTY);
+        }
 
-        return PostResponse.from(postRepository.save(new Post(title, content)));
+        Category postCategory;
+        try {
+            postCategory = Category.valueOf(category);
+        } catch (IllegalArgumentException e) {
+            throw new GeneralException(PostErrorCode.POST_INVALID_CATEGORY);
+        }
+
+        return PostResponse.from(postRepository.save(new Post(postCategory, title, content, author)));
     }
 
     // 게시글 목록 조회

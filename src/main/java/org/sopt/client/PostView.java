@@ -24,6 +24,18 @@ public class PostView {
         return Integer.parseInt(scanner.nextLine());
     }
 
+    public void printCategory() {
+        System.out.println("\n=== 카테고리 ===");
+        System.out.println("레시피");
+        System.out.println("운동");
+        System.out.println("IT");
+    }
+
+    public String readCategory() {
+        System.out.print("카테고리: ");
+        return scanner.nextLine();
+    }
+
     public String readTitle() {
         System.out.print("제목: ");
         return scanner.nextLine();
@@ -31,6 +43,11 @@ public class PostView {
 
     public String readContent() {
         System.out.print("내용: ");
+        return scanner.nextLine();
+    }
+
+    public String readAuthor() {
+        System.out.print("작성자: ");
         return scanner.nextLine();
     }
 
@@ -58,8 +75,10 @@ public class PostView {
         }
 
         System.out.println("\n=== 게시글 ===");
+        System.out.println("카테고리: " + post.data().category());
         System.out.println("제목: " + post.data().title());
         System.out.println("내용: " + post.data().content());
+        System.out.println("작성자: " + post.data().author());
     }
 
     public void printMessage(ApiResponse<?> message) {

@@ -2,12 +2,20 @@ package org.sopt.post.domain;
 
 public class Post {
     private int id;
+    private Category category;
     private String title;
     private String content;
+    private String author;
 
-    public Post(String title, String content) {
+    public Post(Category category, String title, String content, String author) {
+        this.category = category;
         this.title = title;
         this.content = content;
+        this.author = author;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 
     public int getId() {
@@ -24,6 +32,10 @@ public class Post {
 
     public String getContent() {
         return this.content;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 
     // Post 수정은 제목과 내용을 모두 입력 받는다.

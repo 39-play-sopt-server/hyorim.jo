@@ -15,7 +15,8 @@ public class Main {
 
             switch (command) {
                 case 1 -> {
-                    view.printMessage(controller.createPost(view.readTitle(), view.readContent()));
+                    view.printCategory();
+                    view.printMessage(controller.createPost(view.readCategory(), view.readTitle(), view.readContent(), view.readAuthor()));
                 }
                 case 2 -> {
                     view.printPosts(controller.getPosts());

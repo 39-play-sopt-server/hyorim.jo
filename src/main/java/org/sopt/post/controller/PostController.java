@@ -15,9 +15,9 @@ public class PostController {
         this.service = service;
     }
 
-    public ApiResponse<PostResponse> createPost(String title, String content) {
+    public ApiResponse<PostResponse> createPost(String category, String title, String content, String author) {
         try {
-            return ApiResponse.created(service.createPost(title, content));
+            return ApiResponse.created(service.createPost(category, title, content, author));
         } catch (GeneralException e) {
             return ApiResponse.fail(e.getErrorCode());
         } catch (Exception e) {
