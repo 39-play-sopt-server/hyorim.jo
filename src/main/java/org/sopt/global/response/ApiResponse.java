@@ -15,10 +15,6 @@ public record ApiResponse<T>(boolean isSuccess, String code, String message, T d
     }
 
     // 생성
-    public static <T> ApiResponse<T> created() {
-        return success(SuccessCode.CREATED, null);
-    }
-
     public static <T> ApiResponse<T> created(T data) {
         return success(SuccessCode.CREATED, data);
     }
