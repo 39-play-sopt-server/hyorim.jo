@@ -8,6 +8,7 @@ import org.sopt.post.dto.PostResponse;
 import org.sopt.post.repository.PostRepository;
 
 import java.util.List;
+import java.util.Locale;
 
 public class PostService {
     private final PostRepository postRepository;
@@ -30,7 +31,7 @@ public class PostService {
 
         Category postCategory;
         try {
-            postCategory = Category.valueOf(category);
+            postCategory = Category.valueOf(category.toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
             throw new GeneralException(PostErrorCode.POST_INVALID_CATEGORY);
         }
