@@ -4,12 +4,16 @@ import org.sopt.global.exception.GeneralException;
 import org.sopt.post.code.PostErrorCode;
 import org.sopt.post.domain.Category;
 import org.sopt.post.domain.Post;
+import org.sopt.post.dto.CreatePostRequest;
 import org.sopt.post.dto.PostResponse;
+import org.sopt.post.dto.UpdatePostRequest;
 import org.sopt.post.repository.PostRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
 
+@Service
 public class PostService {
     private final PostRepository postRepository;
 
@@ -18,25 +22,28 @@ public class PostService {
     }
 
     // 게시글 작성
-    public PostResponse createPost(String category, String title, String content, String author) {
-        if (title == null || title.isBlank()) {
+    public PostResponse createPost(CreatePostRequest request) {
+        if (request.category() == null || request.category().isBlank()) {
+            throw new GeneralException(PostErrorCode.POST_INVALID_CATEGORY);
+        }
+        if (request.title() == null || request.title().isBlank()) {
             throw new GeneralException(PostErrorCode.POST_TITLE_EMPTY);
         }
-        if (content == null || content.isBlank()) {
+        if (request.content() == null || request.content().isBlank()) {
             throw new GeneralException(PostErrorCode.POST_CONTENT_EMPTY);
         }
-        if (author == null || author.isBlank()) {
+        if (request.author() == null || request.author().isBlank()) {
             throw new GeneralException(PostErrorCode.POST_AUTHOR_EMPTY);
         }
 
         Category postCategory;
         try {
-            postCategory = Category.valueOf(category.toUpperCase(Locale.ROOT));
+            postCategory = Category.valueOf(request.category().toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
             throw new GeneralException(PostErrorCode.POST_INVALID_CATEGORY);
         }
 
-        return PostResponse.from(postRepository.save(new Post(postCategory, title, content, author)));
+        return PostResponse.from(postRepository.save(new Post(postCategory, request.title(), request.content(), request.author())));
     }
 
     // 게시글 목록 조회
@@ -45,29 +52,29 @@ public class PostService {
     }
 
     // 게시글 상세 조회
-    public PostResponse getPost(int postId) {
+    public PostResponse getPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));
         return PostResponse.from(post);
     }
 
     // 게시글 수정
-    public void updatePost(int postId, String title, String content) {
+    public void updatePost(Long postId, UpdatePostRequest request) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));
 
-        if (title == null || title.isBlank()) {
+        if (request.title() == null || request.title().isBlank()) {
             throw new GeneralException(PostErrorCode.POST_TITLE_EMPTY);
         }
-        if (content == null || content.isBlank()) {
+        if (request.content() == null || request.content().isBlank()) {
             throw new GeneralException(PostErrorCode.POST_CONTENT_EMPTY);
         }
 
-        post.updatePost(title, content);
+        post.updatePost(request.title(), request.content());
     }
 
     // 게시글 삭제
-    public void deletePost(int postId) {
+    public void deletePost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));
         postRepository.delete(post);

@@ -3,21 +3,27 @@ package org.sopt.post.controller;
 import org.sopt.global.code.CommonErrorCode;
 import org.sopt.global.exception.GeneralException;
 import org.sopt.global.response.ApiResponse;
+import org.sopt.post.dto.CreatePostRequest;
 import org.sopt.post.dto.PostResponse;
+import org.sopt.post.dto.UpdatePostRequest;
 import org.sopt.post.service.PostService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequestMapping(path = "/api/v1/posts")
 public class PostController {
-    private final PostService service;
+    private final PostService postService;
 
     public PostController(PostService service) {
-        this.service = service;
+        this.postService = service;
     }
 
-    public ApiResponse<PostResponse> createPost(String category, String title, String content, String author) {
+    @PostMapping
+    public ApiResponse<PostResponse> createPost(@RequestBody CreatePostRequest request) {
         try {
-            return ApiResponse.created(service.createPost(category, title, content, author));
+            return ApiResponse.created(postService.createPost(request));
         } catch (GeneralException e) {
             return ApiResponse.fail(e.getErrorCode());
         } catch (Exception e) {
@@ -25,9 +31,10 @@ public class PostController {
         }
     }
 
+    @GetMapping
     public ApiResponse<List<PostResponse>> getPosts() {
         try {
-            return ApiResponse.ok(service.getPosts());
+            return ApiResponse.ok(postService.getPosts());
         } catch (GeneralException e) {
             return ApiResponse.fail(e.getErrorCode());
         } catch (Exception e) {
@@ -35,9 +42,10 @@ public class PostController {
         }
     }
 
-    public ApiResponse<PostResponse> getPost(int postId) {
+    @GetMapping(path = "/{postId}")
+    public ApiResponse<PostResponse> getPost(@PathVariable(name = "postId") Long postId) {
         try {
-            return ApiResponse.ok(service.getPost(postId));
+            return ApiResponse.ok(postService.getPost(postId));
         } catch (GeneralException e) {
             return ApiResponse.fail(e.getErrorCode());
         } catch (Exception e) {
@@ -45,9 +53,10 @@ public class PostController {
         }
     }
 
-    public ApiResponse<Void> updatePost(int postId, String title, String content) {
+    @PatchMapping(path = "/{postId}")
+    public ApiResponse<Void> updatePost(@PathVariable(name = "postId") Long postId, @RequestBody UpdatePostRequest request) {
         try {
-            service.updatePost(postId, title, content);
+            postService.updatePost(postId, request);
             return ApiResponse.ok();
         } catch (GeneralException e) {
             return ApiResponse.fail(e.getErrorCode());
@@ -56,9 +65,10 @@ public class PostController {
         }
     }
 
-    public ApiResponse<Void> deletePost(int postId) {
+    @DeleteMapping(path = "/{postId}")
+    public ApiResponse<Void> deletePost(@PathVariable(name = "postId") Long postId) {
         try {
-            service.deletePost(postId);
+            postService.deletePost(postId);
             return ApiResponse.ok();
         } catch (GeneralException e) {
             return ApiResponse.fail(e.getErrorCode());
