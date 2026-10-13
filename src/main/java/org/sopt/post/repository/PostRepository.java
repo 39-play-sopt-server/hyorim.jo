@@ -5,6 +5,7 @@ import org.sopt.post.domain.Post;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class PostRepository {
     private final Map<Integer, Post> posts = new LinkedHashMap<>();
@@ -20,12 +21,12 @@ public class PostRepository {
         return List.copyOf(posts.values());
     }
 
-    public Post findById(int postId) {
-        return posts.get(postId);
+    public Optional<Post> findById(int postId) {
+        return Optional.ofNullable(posts.get(postId));
     }
 
-    public void deleteById(int postId) {
-        posts.remove(postId);
+    public void delete(Post post) {
+        posts.remove(post.getId());
     }
 
     private int autoIncrementId() {

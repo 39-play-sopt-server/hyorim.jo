@@ -45,18 +45,15 @@ public class PostService {
 
     // 게시글 상세 조회
     public PostResponse getPost(int postId) {
-        if (postRepository.findById(postId) == null) {
-            throw new GeneralException(PostErrorCode.POST_NOT_FOUND);
-        }
-
-        return PostResponse.from(postRepository.findById(postId));
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));
+        return PostResponse.from(post);
     }
 
     // 게시글 수정
     public void updatePost(int postId, String title, String content) {
-        if (postRepository.findById(postId) == null) {
-            throw new GeneralException(PostErrorCode.POST_NOT_FOUND);
-        }
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));
 
         if (title == null || title.isBlank()) {
             throw new GeneralException(PostErrorCode.POST_TITLE_EMPTY);
@@ -65,15 +62,13 @@ public class PostService {
             throw new GeneralException(PostErrorCode.POST_CONTENT_EMPTY);
         }
 
-        postRepository.findById(postId).updatePost(title, content);
+        post.updatePost(title, content);
     }
 
     // 게시글 삭제
     public void deletePost(int postId) {
-        if (postRepository.findById(postId) == null) {
-            throw new GeneralException(PostErrorCode.POST_NOT_FOUND);
-        }
-
-        postRepository.deleteById(postId);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));
+        postRepository.delete(post);
     }
 }
