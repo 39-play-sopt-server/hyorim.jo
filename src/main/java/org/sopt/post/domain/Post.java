@@ -1,7 +1,7 @@
 package org.sopt.post.domain;
 
 public class Post {
-    private int id;
+    private Long id;
     private Category category;
     private String title;
     private String content;
@@ -18,11 +18,11 @@ public class Post {
         return category;
     }
 
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

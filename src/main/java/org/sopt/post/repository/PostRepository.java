@@ -1,15 +1,17 @@
 package org.sopt.post.repository;
 
 import org.sopt.post.domain.Post;
+import org.springframework.stereotype.Repository;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Repository
 public class PostRepository {
-    private final Map<Integer, Post> posts = new LinkedHashMap<>();
-    private int sequence = 0;
+    private final Map<Long, Post> posts = new LinkedHashMap<>();
+    private Long sequence = 0L;
 
     public Post save(Post post) {
         post.setId(autoIncrementId());
@@ -21,7 +23,7 @@ public class PostRepository {
         return List.copyOf(posts.values());
     }
 
-    public Optional<Post> findById(int postId) {
+    public Optional<Post> findById(Long postId) {
         return Optional.ofNullable(posts.get(postId));
     }
 
@@ -29,7 +31,7 @@ public class PostRepository {
         posts.remove(post.getId());
     }
 
-    private int autoIncrementId() {
+    private Long autoIncrementId() {
         return ++sequence;
     }
 }

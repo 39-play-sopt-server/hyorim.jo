@@ -4,7 +4,7 @@ import org.sopt.post.domain.Category;
 import org.sopt.post.domain.Post;
 
 public record PostResponse(
-        int id,
+        Long id,
         Category category,
         String title,
         String content,
