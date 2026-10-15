@@ -55,6 +55,9 @@ public class PostService {
     public PostResponse getPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));
+
+        post.increaseViewCount();
+
         return PostResponse.from(post);
     }
 

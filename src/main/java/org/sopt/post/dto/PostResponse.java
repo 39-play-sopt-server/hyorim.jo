@@ -8,9 +8,10 @@ public record PostResponse(
         Category category,
         String title,
         String content,
-        String author
+        String author,
+        long viewCount
 ) {
     public static PostResponse from(Post post) {
-        return new PostResponse(post.getId(), post.getCategory(), post.getTitle(), post.getContent(), post.getAuthor());
+        return new PostResponse(post.getId(), post.getCategory(), post.getTitle(), post.getContent(), post.getAuthor(), post.getViewCount());
     }
 }
