@@ -59,7 +59,7 @@ public class PostService {
     }
 
     // 게시글 수정
-    public void updatePost(Long postId, UpdatePostRequest request) {
+    public PostResponse updatePost(Long postId, UpdatePostRequest request) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));
 
@@ -71,6 +71,7 @@ public class PostService {
         }
 
         post.updatePost(request.title(), request.content());
+        return PostResponse.from(post);
     }
 
     // 게시글 삭제
