@@ -3,10 +3,7 @@ package org.sopt.post.repository;
 import org.sopt.post.domain.Post;
 import org.springframework.stereotype.Repository;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class PostRepository {
@@ -21,6 +18,13 @@ public class PostRepository {
 
     public List<Post> findAll() {
         return List.copyOf(posts.values());
+    }
+
+    public List<Post> findPage(long offset, int size) {
+        return posts.values().stream()
+            .skip(offset)
+            .limit(size)
+            .toList();
     }
 
     public Optional<Post> findById(Long postId) {

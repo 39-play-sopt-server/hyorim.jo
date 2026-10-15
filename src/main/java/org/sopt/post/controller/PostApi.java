@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.sopt.global.response.ApiResponse;
 import org.sopt.post.dto.CreatePostRequest;
+import org.sopt.post.dto.PostListResponse;
 import org.sopt.post.dto.PostResponse;
 import org.sopt.post.dto.UpdatePostRequest;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,13 @@ public interface PostApi {
 
     @Operation(summary = "게시글 목록 조회", description = "게시글 목록을 조회합니다.")
     @GetMapping
-    ApiResponse<List<PostResponse>> getPosts();
+    ApiResponse<List<PostListResponse>> getPosts(
+            @Parameter(description = "페이지 번호", example = "0")
+            @RequestParam(name = "page", defaultValue = "0") int page,
+
+            @Parameter(description = "페이지 크기", example = "10")
+            @RequestParam(name = "size", defaultValue = "10") int size
+    );
 
     @Operation(summary = "게시글 상세 조회", description = "게시글을 상세 조회합니다.")
     @GetMapping(path = "/{postId}")

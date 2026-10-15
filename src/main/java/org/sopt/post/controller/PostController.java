@@ -2,6 +2,7 @@ package org.sopt.post.controller;
 
 import org.sopt.global.response.ApiResponse;
 import org.sopt.post.dto.CreatePostRequest;
+import org.sopt.post.dto.PostListResponse;
 import org.sopt.post.dto.PostResponse;
 import org.sopt.post.dto.UpdatePostRequest;
 import org.sopt.post.service.PostService;
@@ -24,8 +25,8 @@ public class PostController implements PostApi {
     }
 
     @Override
-    public ApiResponse<List<PostResponse>> getPosts() {
-        return ApiResponse.ok(postService.getPosts());
+    public ApiResponse<List<PostListResponse>> getPosts(int page, int size) {
+        return ApiResponse.ok(postService.getPosts(page, size));
     }
 
     @Override
