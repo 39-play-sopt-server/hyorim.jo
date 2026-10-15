@@ -1,5 +1,6 @@
 package org.sopt.post.repository;
 
+import org.sopt.post.domain.Category;
 import org.sopt.post.domain.Post;
 import org.springframework.stereotype.Repository;
 
@@ -20,11 +21,12 @@ public class PostRepository {
         return List.copyOf(posts.values());
     }
 
-    public List<Post> findPage(long offset, int size) {
+    public List<Post> findPage(long offset, int size, Category category) {
         return posts.values().stream()
-            .skip(offset)
-            .limit(size)
-            .toList();
+                .filter(post -> category == null || post.getCategory() == category) // 카테고리 필수 조건 x
+                .skip(offset)
+                .limit(size)
+                .toList();
     }
 
     public Optional<Post> findById(Long postId) {

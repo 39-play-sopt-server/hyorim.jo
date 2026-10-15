@@ -48,14 +48,23 @@ public class PostService {
     }
 
     // 게시글 목록 조회
-    public List<PostListResponse> getPosts(int page, int size) {
+    public List<PostListResponse> getPosts(int page, int size, String category) {
         if (page < 0 || size < 1) {
             throw new GeneralException(PostErrorCode.POST_INVALID_PAGE_REQUEST);
         }
 
         long offset = (long) page * size;
 
-        return postRepository.findPage(offset, size).stream().map(PostListResponse::from).toList();
+        Category postCategory = null;
+        if (category != null) {
+            try {
+                postCategory = Category.valueOf(category.toUpperCase(Locale.ROOT));
+            } catch (IllegalArgumentException e) {
+                throw new GeneralException(PostErrorCode.POST_INVALID_CATEGORY);
+            }
+        }
+
+        return postRepository.findPage(offset, size, postCategory).stream().map(PostListResponse::from).toList();
     }
 
     // 게시글 상세 조회

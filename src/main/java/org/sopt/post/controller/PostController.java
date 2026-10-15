@@ -25,8 +25,8 @@ public class PostController implements PostApi {
     }
 
     @Override
-    public ApiResponse<List<PostListResponse>> getPosts(int page, int size) {
-        return ApiResponse.ok(postService.getPosts(page, size));
+    public ApiResponse<List<PostListResponse>> getPosts(int page, int size, String category) {
+        return ApiResponse.ok(postService.getPosts(page, size, category));
     }
 
     @Override
