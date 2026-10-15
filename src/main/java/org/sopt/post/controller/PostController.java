@@ -10,36 +10,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/v1/posts") // TODO: @ApiV1 구현
-public class PostController {
+// TODO: @ApiV1 구현
+public class PostController implements PostApi {
     private final PostService postService;
 
     public PostController(PostService service) {
         this.postService = service;
     }
 
-    @PostMapping
-    public ApiResponse<PostResponse> createPost(@RequestBody CreatePostRequest request) {
+    @Override
+    public ApiResponse<PostResponse> createPost(CreatePostRequest request) {
         return ApiResponse.created(postService.createPost(request));
     }
 
-    @GetMapping
+    @Override
     public ApiResponse<List<PostResponse>> getPosts() {
         return ApiResponse.ok(postService.getPosts());
     }
 
-    @GetMapping(path = "/{postId}")
-    public ApiResponse<PostResponse> getPost(@PathVariable(name = "postId") Long postId) {
+    @Override
+    public ApiResponse<PostResponse> getPost(Long postId) {
         return ApiResponse.ok(postService.getPost(postId));
     }
 
-    @PatchMapping(path = "/{postId}")
-    public ApiResponse<PostResponse> updatePost(@PathVariable(name = "postId") Long postId, @RequestBody UpdatePostRequest request) {
+    @Override
+    public ApiResponse<PostResponse> updatePost(Long postId, UpdatePostRequest request) {
         return ApiResponse.ok(postService.updatePost(postId, request));
     }
 
-    @DeleteMapping(path = "/{postId}")
-    public ApiResponse<Void> deletePost(@PathVariable(name = "postId") Long postId) {
+    @Override
+    public ApiResponse<Void> deletePost(Long postId) {
         postService.deletePost(postId);
         return ApiResponse.ok();
     }

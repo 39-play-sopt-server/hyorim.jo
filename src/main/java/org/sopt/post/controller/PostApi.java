@@ -1,0 +1,48 @@
+package org.sopt.post.controller;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.sopt.global.response.ApiResponse;
+import org.sopt.post.dto.CreatePostRequest;
+import org.sopt.post.dto.PostResponse;
+import org.sopt.post.dto.UpdatePostRequest;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Tag(name = "게시글 API", description = "게시글과 관련된 API 입니다")
+@RequestMapping(path = "/api/v1/posts")
+public interface PostApi {
+    @Operation(summary = "게시글 생성", description = "게시글을 생성합니다.")
+    @PostMapping
+    ApiResponse<PostResponse> createPost(
+            @RequestBody CreatePostRequest request
+    );
+
+    @Operation(summary = "게시글 목록 조회", description = "게시글 목록을 조회합니다.")
+    @GetMapping
+    ApiResponse<List<PostResponse>> getPosts();
+
+    @Operation(summary = "게시글 상세 조회", description = "게시글을 상세 조회합니다.")
+    @GetMapping(path = "/{postId}")
+    ApiResponse<PostResponse> getPost(
+            @Parameter(description = "게시글 ID", example = "1")
+            @PathVariable(name = "postId") Long postId
+    );
+
+    @Operation(summary = "게시글 수정", description = "게시글을 수정합니다.")
+    @PatchMapping(path = "/{postId}")
+    ApiResponse<PostResponse> updatePost(
+            @Parameter(description = "게시글 ID", example = "1")
+            @PathVariable(name = "postId") Long postId,
+            @RequestBody UpdatePostRequest request
+    );
+
+    @Operation(summary = "게시글 삭제", description = "게시글을 삭제합니다.")
+    @DeleteMapping(path = "/{postId}")
+    ApiResponse<Void> deletePost(
+            @Parameter(description = "게시글 ID", example = "1")
+            @PathVariable(name = "postId") Long postId
+    );
+}
