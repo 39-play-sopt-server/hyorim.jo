@@ -21,7 +21,16 @@ public record ApiResponse<T>(boolean isSuccess, String code, String message, T d
 
     // 실패
     public static <T> ApiResponse<T> fail(BaseErrorCode errorCode) {
-        return new ApiResponse<>(false, errorCode.getCode(), errorCode.getMessage(), null);
+        return fail(errorCode, null);
+    }
+
+    public static <T> ApiResponse<T> fail(BaseErrorCode errorCode, T data) {
+        return new ApiResponse<>(false, errorCode.getCode(), errorCode.getMessage(), data);
+    }
+
+    // 스프링 예외의 상태 코드를 가져다 쓰는데 필요
+    public static <T> ApiResponse<T> fail(String errorCode, String message) {
+        return new ApiResponse<>(false, errorCode, message, null);
     }
 
     private static <T> ApiResponse<T> success(SuccessCode successCode, T data) {

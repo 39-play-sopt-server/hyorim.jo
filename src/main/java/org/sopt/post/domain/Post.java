@@ -6,12 +6,14 @@ public class Post {
     private String title;
     private String content;
     private String author;
+    private long viewCount;
 
     public Post(Category category, String title, String content, String author) {
         this.category = category;
         this.title = title;
         this.content = content;
         this.author = author;
+        this.viewCount = 0L;
     }
 
     public Category getCategory() {
@@ -38,9 +40,17 @@ public class Post {
         return author;
     }
 
+    public long getViewCount() {
+        return this.viewCount;
+    }
+
     // Post 수정은 제목과 내용을 모두 입력 받는다.
     public void updatePost(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void increaseViewCount() {
+        this.viewCount++;
     }
 }
