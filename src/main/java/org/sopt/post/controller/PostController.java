@@ -6,6 +6,7 @@ import org.sopt.post.dto.PostListResponse;
 import org.sopt.post.dto.PostResponse;
 import org.sopt.post.dto.UpdatePostRequest;
 import org.sopt.post.service.PostService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,27 +21,27 @@ public class PostController implements PostApi {
     }
 
     @Override
-    public ApiResponse<PostResponse> createPost(CreatePostRequest request) {
+    public ResponseEntity<ApiResponse<PostResponse>> createPost(CreatePostRequest request) {
         return ApiResponse.created(postService.createPost(request));
     }
 
     @Override
-    public ApiResponse<List<PostListResponse>> getPosts(int page, int size, String category) {
+    public ResponseEntity<ApiResponse<List<PostListResponse>>> getPosts(int page, int size, String category) {
         return ApiResponse.ok(postService.getPosts(page, size, category));
     }
 
     @Override
-    public ApiResponse<PostResponse> getPost(Long postId) {
+    public ResponseEntity<ApiResponse<PostResponse>> getPost(Long postId) {
         return ApiResponse.ok(postService.getPost(postId));
     }
 
     @Override
-    public ApiResponse<PostResponse> updatePost(Long postId, UpdatePostRequest request) {
+    public ResponseEntity<ApiResponse<PostResponse>> updatePost(Long postId, UpdatePostRequest request) {
         return ApiResponse.ok(postService.updatePost(postId, request));
     }
 
     @Override
-    public ApiResponse<Void> deletePost(Long postId) {
+    public ResponseEntity<ApiResponse<Void>> deletePost(Long postId) {
         postService.deletePost(postId);
         return ApiResponse.ok();
     }
