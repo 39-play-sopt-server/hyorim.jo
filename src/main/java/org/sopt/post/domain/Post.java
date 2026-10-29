@@ -1,9 +1,10 @@
 package org.sopt.post.domain;
 
 import jakarta.persistence.*;
+import org.sopt.global.domain.BaseTimeEntity;
 
 @Entity
-public class Post {
+public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
