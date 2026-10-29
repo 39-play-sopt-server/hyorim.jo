@@ -6,9 +6,11 @@ import org.springframework.http.HttpStatus;
 public enum PostErrorCode implements BaseErrorCode {
     POST_TITLE_EMPTY(HttpStatus.BAD_REQUEST, "POST4001", "제목을 입력해 주세요."),
     POST_CONTENT_EMPTY(HttpStatus.BAD_REQUEST, "POST4002", "내용을 입력해 주세요."),
-    POST_AUTHOR_EMPTY(HttpStatus.BAD_REQUEST, "POST4003", "작성자를 입력해 주세요."),
-    POST_INVALID_CATEGORY(HttpStatus.BAD_REQUEST, "POST4004", "존재하지 않는 카테고리입니다."),
-    POST_INVALID_PAGE_REQUEST(HttpStatus.BAD_REQUEST, "POST4005", "page는 0 이상, size는 1 이상이여야 합니다."),
+    POST_AUTHOR_EMPTY(HttpStatus.BAD_REQUEST, "POST4003", "프로필을 선택해 주세요."),
+    POST_INVALID_PREFIX(HttpStatus.BAD_REQUEST, "POST4004", "이 게시판에서 사용할 수 없는 말머리입니다."),
+    POST_BOARD_EMPTY(HttpStatus.BAD_REQUEST, "POST4006", "게시판을 선택해 주세요."),
+
+    POST_NOT_COMMUNITY_MEMBER(HttpStatus.FORBIDDEN, "POST4031", "해당 커뮤니티의 프로필만 글을 쓸 수 있습니다."),
 
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4041", "존재하지 않는 게시글입니다.");
 
