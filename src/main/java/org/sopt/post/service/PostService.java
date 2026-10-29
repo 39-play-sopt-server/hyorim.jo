@@ -5,6 +5,7 @@ import org.sopt.post.code.PostErrorCode;
 import org.sopt.post.domain.Category;
 import org.sopt.post.domain.Post;
 import org.sopt.post.dto.CreatePostRequest;
+import org.sopt.post.dto.PostListResponse;
 import org.sopt.post.dto.PostResponse;
 import org.sopt.post.dto.UpdatePostRequest;
 import org.sopt.post.repository.PostRepository;
@@ -47,19 +48,37 @@ public class PostService {
     }
 
     // 게시글 목록 조회
-    public List<PostResponse> getPosts() {
-        return postRepository.findAll().stream().map(PostResponse::from).toList();
+    public List<PostListResponse> getPosts(int page, int size, String category) {
+        if (page < 0 || size < 1) {
+            throw new GeneralException(PostErrorCode.POST_INVALID_PAGE_REQUEST);
+        }
+
+        long offset = (long) page * size;
+
+        Category postCategory = null;
+        if (category != null) {
+            try {
+                postCategory = Category.valueOf(category.toUpperCase(Locale.ROOT));
+            } catch (IllegalArgumentException e) {
+                throw new GeneralException(PostErrorCode.POST_INVALID_CATEGORY);
+            }
+        }
+
+        return postRepository.findPage(offset, size, postCategory).stream().map(PostListResponse::from).toList();
     }
 
     // 게시글 상세 조회
     public PostResponse getPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));
+
+        post.increaseViewCount();
+
         return PostResponse.from(post);
     }
 
     // 게시글 수정
-    public void updatePost(Long postId, UpdatePostRequest request) {
+    public PostResponse updatePost(Long postId, UpdatePostRequest request) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));
 
@@ -71,6 +90,7 @@ public class PostService {
         }
 
         post.updatePost(request.title(), request.content());
+        return PostResponse.from(post);
     }
 
     // 게시글 삭제
