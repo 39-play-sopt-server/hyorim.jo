@@ -1,7 +1,24 @@
 package org.sopt.post.domain;
 
-public enum Category {
-    레시피,
-    운동,
-    IT;
+import jakarta.persistence.*;
+
+@Entity
+public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String name;
+
+    protected Category() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

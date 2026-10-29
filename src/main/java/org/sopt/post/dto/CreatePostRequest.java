@@ -1,10 +1,9 @@
 package org.sopt.post.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.sopt.post.domain.Category;
 
 public record CreatePostRequest(
-        @Schema(implementation = Category.class, description = "카테고리", example = "IT")
+        @Schema(description = "카테고리", example = "IT")
         String category,
 
         @Schema(description = "제목", example = "제목")

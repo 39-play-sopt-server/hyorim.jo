@@ -1,12 +1,25 @@
 package org.sopt.post.domain;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Category category;
     private String title;
-    private String content;
     private String author;
     private long viewCount;
+
+    @Column(columnDefinition = "TEXT")
+    private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
+    protected Post() {
+    }
 
     public Post(Category category, String title, String content, String author) {
         this.category = category;
@@ -22,10 +35,6 @@ public class Post {
 
     public Long getId() {
         return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTitle() {

@@ -4,25 +4,31 @@ import org.sopt.global.exception.GeneralException;
 import org.sopt.post.code.PostErrorCode;
 import org.sopt.post.domain.Category;
 import org.sopt.post.domain.Post;
-import org.sopt.post.dto.CreatePostRequest;
-import org.sopt.post.dto.PostListResponse;
-import org.sopt.post.dto.PostResponse;
-import org.sopt.post.dto.UpdatePostRequest;
+import org.sopt.post.dto.*;
+import org.sopt.post.repository.CategoryRepository;
 import org.sopt.post.repository.PostRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Locale;
 
 @Service
+@Transactional(readOnly = true)
 public class PostService {
     private final PostRepository postRepository;
+    private final CategoryRepository categoryRepository;
 
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, CategoryRepository categoryRepository) {
         this.postRepository = postRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     // 게시글 작성
+    @Transactional
     public PostResponse createPost(CreatePostRequest request) {
         if (request.category() == null || request.category().isBlank()) {
             throw new GeneralException(PostErrorCode.POST_INVALID_CATEGORY);
@@ -37,12 +43,8 @@ public class PostService {
             throw new GeneralException(PostErrorCode.POST_AUTHOR_EMPTY);
         }
 
-        Category postCategory;
-        try {
-            postCategory = Category.valueOf(request.category().toUpperCase(Locale.ROOT));
-        } catch (IllegalArgumentException e) {
-            throw new GeneralException(PostErrorCode.POST_INVALID_CATEGORY);
-        }
+        Category postCategory = categoryRepository.findByName(request.category())
+                .orElseThrow(() -> new GeneralException(PostErrorCode.POST_INVALID_CATEGORY));
 
         return PostResponse.from(postRepository.save(new Post(postCategory, request.title(), request.content(), request.author())));
     }
@@ -68,6 +70,7 @@ public class PostService {
     }
 
     // 게시글 상세 조회
+    @Transactional
     public PostResponse getPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));
@@ -78,6 +81,7 @@ public class PostService {
     }
 
     // 게시글 수정
+    @Transactional
     public PostResponse updatePost(Long postId, UpdatePostRequest request) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));
@@ -94,6 +98,7 @@ public class PostService {
     }
 
     // 게시글 삭제
+    @Transactional
     public void deletePost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));

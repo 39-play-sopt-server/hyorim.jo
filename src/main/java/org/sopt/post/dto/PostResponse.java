@@ -1,14 +1,13 @@
 package org.sopt.post.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.sopt.post.domain.Category;
 import org.sopt.post.domain.Post;
 
 public record PostResponse(
         Long id,
 
         @Schema(description = "카테고리", example = "IT")
-        Category category,
+        String category,
 
         @Schema(description = "제목", example = "제목")
         String title,
@@ -23,6 +22,6 @@ public record PostResponse(
         long viewCount
 ) {
     public static PostResponse from(Post post) {
-        return new PostResponse(post.getId(), post.getCategory(), post.getTitle(), post.getContent(), post.getAuthor(), post.getViewCount());
+        return new PostResponse(post.getId(), post.getCategory().getName(), post.getTitle(), post.getContent(), post.getAuthor(), post.getViewCount());
     }
 }
