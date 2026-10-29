@@ -50,23 +50,25 @@ public class PostService {
     }
 
     // 게시글 목록 조회
-    public List<PostListResponse> getPosts(int page, int size, String category) {
+    public PostPageResponse getPosts(int page, int size, String category) {
         if (page < 0 || size < 1) {
             throw new GeneralException(PostErrorCode.POST_INVALID_PAGE_REQUEST);
         }
 
-        long offset = (long) page * size;
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        return PostPageResponse.from(findPosts(category, pageable));
+    }
 
-        Category postCategory = null;
-        if (category != null) {
-            try {
-                postCategory = Category.valueOf(category.toUpperCase(Locale.ROOT));
-            } catch (IllegalArgumentException e) {
-                throw new GeneralException(PostErrorCode.POST_INVALID_CATEGORY);
-            }
+    private Page<Post> findPosts(String category, Pageable pageable) {
+        // ?category= 빈 문자열 처리
+        if (category == null || category.isBlank()) {
+            return postRepository.findAll(pageable);
         }
 
-        return postRepository.findPage(offset, size, postCategory).stream().map(PostListResponse::from).toList();
+        Category postCategory = categoryRepository.findByName(category)
+                .orElseThrow(() -> new GeneralException(PostErrorCode.POST_INVALID_CATEGORY));
+
+        return postRepository.findByCategory(postCategory, pageable);
     }
 
     // 게시글 상세 조회

@@ -6,10 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.sopt.global.code.SuccessCode;
 import org.sopt.global.response.ApiResponse;
 import org.sopt.global.swagger.ApiSuccessCode;
-import org.sopt.post.dto.CreatePostRequest;
-import org.sopt.post.dto.PostListResponse;
-import org.sopt.post.dto.PostResponse;
-import org.sopt.post.dto.UpdatePostRequest;
+import org.sopt.post.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +24,7 @@ public interface PostApi {
 
     @Operation(summary = "게시글 목록 조회", description = "게시글 목록을 조회합니다. 카테고리를 지정하면 해당 카테고리의 글만 조회합니다.")
     @GetMapping
-    ResponseEntity<ApiResponse<List<PostListResponse>>> getPosts(
+    ResponseEntity<ApiResponse<PostPageResponse>> getPosts(
             @Parameter(description = "페이지 번호", example = "0")
             @RequestParam(name = "page", defaultValue = "0") int page,
 

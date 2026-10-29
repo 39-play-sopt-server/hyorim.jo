@@ -1,10 +1,7 @@
 package org.sopt.post.controller;
 
 import org.sopt.global.response.ApiResponse;
-import org.sopt.post.dto.CreatePostRequest;
-import org.sopt.post.dto.PostListResponse;
-import org.sopt.post.dto.PostResponse;
-import org.sopt.post.dto.UpdatePostRequest;
+import org.sopt.post.dto.*;
 import org.sopt.post.service.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +23,7 @@ public class PostController implements PostApi {
     }
 
     @Override
-    public ResponseEntity<ApiResponse<List<PostListResponse>>> getPosts(int page, int size, String category) {
+    public ResponseEntity<ApiResponse<PostPageResponse>> getPosts(int page, int size, String category) {
         return ApiResponse.ok(postService.getPosts(page, size, category));
     }
 
