@@ -1,0 +1,11 @@
+.env
+.git
+.github
+.gradle
+.idea
+build
+deploy
+docs
+terraform
+dev/docker-compose.dev.yml
+*.md
