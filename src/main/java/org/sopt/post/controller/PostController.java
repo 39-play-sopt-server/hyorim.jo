@@ -1,15 +1,10 @@
 package org.sopt.post.controller;
 
 import org.sopt.global.response.ApiResponse;
-import org.sopt.post.dto.CreatePostRequest;
-import org.sopt.post.dto.PostListResponse;
-import org.sopt.post.dto.PostResponse;
-import org.sopt.post.dto.UpdatePostRequest;
+import org.sopt.post.dto.*;
 import org.sopt.post.service.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 // TODO: @ApiV1 구현
@@ -21,13 +16,13 @@ public class PostController implements PostApi {
     }
 
     @Override
-    public ResponseEntity<ApiResponse<PostResponse>> createPost(CreatePostRequest request) {
-        return ApiResponse.created(postService.createPost(request));
+    public ResponseEntity<ApiResponse<PostResponse>> createPost(Long memberId, CreatePostRequest request) {
+        return ApiResponse.created(postService.createPost(memberId, request));
     }
 
     @Override
-    public ResponseEntity<ApiResponse<List<PostListResponse>>> getPosts(int page, int size, String category) {
-        return ApiResponse.ok(postService.getPosts(page, size, category));
+    public ResponseEntity<ApiResponse<PostPageResponse>> getPosts(int page, int size, Long prefixId) {
+        return ApiResponse.ok(postService.getPosts(page, size, prefixId));
     }
 
     @Override

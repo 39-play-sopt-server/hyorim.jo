@@ -1,14 +1,14 @@
 package org.sopt.post.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.sopt.post.domain.Category;
+import org.sopt.community.domain.Prefix;
 import org.sopt.post.domain.Post;
 
 public record PostListResponse(
         Long id,
 
-        @Schema(description = "카테고리", example = "IT")
-        Category category,
+        @Schema(description = "말머리", example = "질문")
+        String prefix,
 
         @Schema(description = "제목", example = "제목")
         String title,
@@ -20,6 +20,13 @@ public record PostListResponse(
         long viewCount
 ) {
     public static PostListResponse from(Post post) {
-        return new PostListResponse(post.getId(), post.getCategory(), post.getTitle(), post.getAuthor(), post.getViewCount());
+        Prefix prefix = post.getPrefix();
+        return new PostListResponse(
+                post.getId(),
+                prefix == null ? null : prefix.getName(),
+                post.getTitle(),
+                post.getCommunityProfile().getProfile().getName(),
+                post.getViewCount()
+        );
     }
 }
