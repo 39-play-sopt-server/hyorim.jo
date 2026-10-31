@@ -38,4 +38,11 @@ bin/
 ### Mac OS ###
 .DS_Store
 
+### infra
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+### security
 .env

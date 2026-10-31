@@ -1,0 +1,24 @@
+name: sopt-assignment
+
+services:
+  api:
+    image: ${API_IMAGE}
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/sopt_assignment"
+      SPRING_DATASOURCE_USERNAME: "sopt_assignment"
+      SPRING_JPA_SHOW_SQL: "false"
+    mem_limit: 512m
+    networks: [edge, db]
+    labels:
+      caddy: ${API_DOMAIN}
+      caddy.reverse_proxy: "{{upstreams 8080}}"
+      caddy.encode: zstd gzip
+
+networks:
+  edge:
+    external: true
+  db:
+    external: true
