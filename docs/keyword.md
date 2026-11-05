@@ -136,3 +136,35 @@ Slice는 요청한 개수보다 1개 더 조회해서 다음 페이지가 있는
 개체 무결성, 참조 무결성, 도메인 무결성, 사용자 정의 무결성 by 정처기
 위의 유저가 회원을 탈퇴했을 때 작성했던 게시글이나 댓글을 모두 지워야하는 상황에서 Cascade를 사용합니다.
 스프링에서는 `@OnDelete(action = OnDeleteAction.CASCADE)`로 동작합니다.
+
+---
+
+## 4차 과제
+
+### CI/CD는 무엇인가요?
+- CI: 지속적 통합. 머지할 때 빌드와 테스트를 자동으로 돌리는 것
+- CD: 지속적 배포. 운영 서버에 자동으로 배포
+
+### HTTPS는 왜 적용해야 할까요?
+HTTPS: HTTP + TLS
+안 쓰면 크롬으로 접속이 안 됩니다.
+
+HTTP는 데이터를 평문으로 전송해서 공용 와이파이, 통신사, 프록시 등에서 누군가 가로챌 수 있습니다.
+비밀번호, 개인정보, 카드번호 등이 쉽게 노출됩니다.
+
+[HTTPS를 사용하는 이유는 무엇입니까?](https://www.cloudflare.com/ko-kr/learning/ssl/why-use-https/)
+
+
+### SSL과 TLS는 무엇이고, 어떻게 동작하나요?
+TLS는 Netscape가 개발한 SSL(Secure Sockets Layer)이라고 불리는 이전의 암호화 프로토콜에서 발전한 것
+TLS 프로토콜은 암호화, 인증, 무결성을 제공합니다.
+
+<img width="721" height="451" alt="image" src="https://www.cloudflare.com/img/learning/cdn/tls-ssl/tls-ssl-handshake.png" />
+
+TCP 핸드셰이크가 성립된 이후 TLS 핸드셰이크가 시작됩니다.
+동일한 세션 내에서 발생하는 추가 쿼리들은 이미 생성된 세션을 재사용하기 때문에 TLS 핸드셰이크가 다시 일어나지 않습니다. 웹사이트 방문뿐만 아니라 API 호출, DNS 쿼리(DoH와 같은 암호화된 DNS) 등 HTTPS를 사용하는 경우마다 TLS 핸드셰이크가 발생합니다.
+
+> 클라이언트 헬로 &rarr; 서버 헬로 &rarr; 키 교환 &rarr; 클라이언트 완료 및 서버 완료 &rarr; 데이터 교환 
+
+[TLS(Transport Layer Security)란 무엇인가요?](https://www.cloudflare.com/ko-kr/learning/ssl/transport-layer-security-tls/)
+[TLS(Transport Layer Security) - 토스](https://docs.tosspayments.com/resources/glossary/tls)
