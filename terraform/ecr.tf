@@ -1,7 +1,7 @@
 locals {
-  project       = "sopt-assignment"
-  github_repo   = "39-play-sopt-server/hyorim.jo"
-  deploy_branch = "main"
+  project          = "sopt-assignment"
+  github_repo_sub  = "39-play-sopt-server@330764037/hyorim.jo@1388434213"
+  deploy_branch    = "main"
   ecr_repositories = ["${local.project}-api"]
 }
 
