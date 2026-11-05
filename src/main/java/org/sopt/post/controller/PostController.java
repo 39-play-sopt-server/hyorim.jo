@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 public class PostController implements PostApi {
     private final PostService postService;
 
-    public PostController(PostService service) {
-        this.postService = service;
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
     @Override

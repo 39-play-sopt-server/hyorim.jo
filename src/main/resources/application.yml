@@ -6,7 +6,7 @@ spring:
     import: optional:file:.env[.properties]
 
   datasource:
-    url: jdbc:mysql://localhost:3306/sopt-assignment
+    url: jdbc:mysql://localhost:3306/sopt_assignment
     username: root
     password: ${MYSQL_ROOT_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -18,3 +18,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS}
