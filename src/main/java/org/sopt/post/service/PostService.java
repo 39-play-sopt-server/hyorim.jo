@@ -140,7 +140,7 @@ public class PostService {
             throw new GeneralException(PostErrorCode.POST_CONTENT_EMPTY);
         }
 
-        post.updatePost(request.title(), request.content());
+        post.update(request.title(), request.content());
         return PostResponse.from(post);
     }
 
