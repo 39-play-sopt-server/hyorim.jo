@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "github_actions_assume" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:${local.github_repo}:ref:refs/heads/${local.deploy_branch}"]
+      values   = ["repo:${local.github_repo_sub}:ref:refs/heads/${local.deploy_branch}"]
     }
   }
 }

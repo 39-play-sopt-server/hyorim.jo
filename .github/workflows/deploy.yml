@@ -87,6 +87,7 @@ jobs:
           API_IMAGE: ${{ needs.build.outputs.api_image }}
           API_DOMAIN: ${{ vars.API_DOMAIN }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          CORS_ALLOWED_ORIGINS: ${{ vars.CORS_ALLOWED_ORIGINS }}
         run: |
           umask 077
           put() {
@@ -99,6 +100,7 @@ jobs:
             put API_IMAGE           "$API_IMAGE"
             put API_DOMAIN          "$API_DOMAIN"
             put SPRING_DATASOURCE_PASSWORD "$DB_PASSWORD"
+            put CORS_ALLOWED_ORIGINS "$CORS_ALLOWED_ORIGINS"
           } > deploy/.env
           chmod 644 deploy/.env
 

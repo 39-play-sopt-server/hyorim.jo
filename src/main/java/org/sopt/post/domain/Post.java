@@ -75,7 +75,7 @@ public class Post extends BaseTimeEntity {
     }
 
     // Post 수정은 제목과 내용을 모두 입력 받는다.
-    public void updatePost(String title, String content) {
+    public void update(String title, String content) {
         this.title = title;
         this.content = content;
     }
