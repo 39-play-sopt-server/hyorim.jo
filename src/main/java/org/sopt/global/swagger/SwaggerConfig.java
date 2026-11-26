@@ -13,13 +13,18 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
-    // 모든 API에 Member-Id 헤더 인증 적용
+    private static final String SECURITY_SCHEME_NAME = "bearerAuth";
+
+    // 모든 API에 JWT Bearer 인증 적용
     // 필요 없으면 @SecurityRequirements로 제외
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
-                .components(new Components().addSecuritySchemes("memberId", new SecurityScheme().type(SecurityScheme.Type.APIKEY).in(SecurityScheme.In.HEADER).name("Member-Id")))
-                .addSecurityItem(new SecurityRequirement().addList("memberId"));
+                .components(new Components().addSecuritySchemes(SECURITY_SCHEME_NAME, new SecurityScheme()
+                        .type(SecurityScheme.Type.HTTP)
+                        .scheme("bearer")
+                        .bearerFormat("JWT")))
+                .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME));
     }
 
     @Bean
