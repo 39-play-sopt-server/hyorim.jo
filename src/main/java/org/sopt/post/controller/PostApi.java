@@ -9,6 +9,7 @@ import org.sopt.global.response.ApiResponse;
 import org.sopt.global.swagger.ApiSuccessCode;
 import org.sopt.post.dto.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "게시글 API", description = "게시글과 관련된 API 입니다")
@@ -19,7 +20,7 @@ public interface PostApi {
     @ApiSuccessCode(SuccessCode.CREATED)
     ResponseEntity<ApiResponse<PostResponse>> createPost(
             @Parameter(hidden = true)
-            @RequestHeader(name = "Member-Id") Long memberId,
+            @AuthenticationPrincipal Long memberId,
 
             @RequestBody CreatePostRequest request
     );
@@ -49,6 +50,9 @@ public interface PostApi {
     @Operation(summary = "게시글 수정", description = "게시글을 수정합니다.")
     @PatchMapping(path = "/{postId}")
     ResponseEntity<ApiResponse<PostResponse>> updatePost(
+            @Parameter(hidden = true)
+            @AuthenticationPrincipal Long memberId,
+
             @Parameter(description = "게시글 ID", example = "1")
             @PathVariable(name = "postId") Long postId,
             @RequestBody UpdatePostRequest request
@@ -57,6 +61,9 @@ public interface PostApi {
     @Operation(summary = "게시글 삭제", description = "게시글을 삭제합니다.")
     @DeleteMapping(path = "/{postId}")
     ResponseEntity<ApiResponse<Void>> deletePost(
+            @Parameter(hidden = true)
+            @AuthenticationPrincipal Long memberId,
+
             @Parameter(description = "게시글 ID", example = "1")
             @PathVariable(name = "postId") Long postId
     );

@@ -129,9 +129,10 @@ public class PostService {
 
     // 게시글 수정
     @Transactional
-    public PostResponse updatePost(Long postId, UpdatePostRequest request) {
+    public PostResponse updatePost(Long memberId, Long postId, UpdatePostRequest request) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));
+        validateAuthor(post, memberId);
 
         if (request.title() == null || request.title().isBlank()) {
             throw new GeneralException(PostErrorCode.POST_TITLE_EMPTY);
@@ -146,9 +147,19 @@ public class PostService {
 
     // 게시글 삭제
     @Transactional
-    public void deletePost(Long postId) {
+    public void deletePost(Long memberId, Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(PostErrorCode.POST_NOT_FOUND));
+        validateAuthor(post, memberId);
+
         postRepository.delete(post);
+    }
+
+    // 게시글 작성자 본인인지 확인
+    private void validateAuthor(Post post, Long memberId) {
+        Long authorId = post.getCommunityProfile().getProfile().getMember().getId();
+        if (!authorId.equals(memberId)) {
+            throw new GeneralException(PostErrorCode.POST_NOT_OWNED);
+        }
     }
 }
