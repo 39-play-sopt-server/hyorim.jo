@@ -6,3 +6,7 @@ spring:
 
   jpa:
     show-sql: false
+
+jwt:
+  refresh-cookie:
+    secure: true
