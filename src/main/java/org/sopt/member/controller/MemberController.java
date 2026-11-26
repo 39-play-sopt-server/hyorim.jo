@@ -1,7 +1,6 @@
 package org.sopt.member.controller;
 
 import org.sopt.global.response.ApiResponse;
-import org.sopt.member.dto.CreateMemberRequest;
 import org.sopt.member.dto.MemberResponse;
 import org.sopt.member.service.MemberService;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +15,13 @@ public class MemberController implements MemberApi {
     }
 
     @Override
-    public ResponseEntity<ApiResponse<MemberResponse>> createMember(CreateMemberRequest request) {
-        return ApiResponse.created(memberService.createMember(request));
-    }
-
-    @Override
     public ResponseEntity<ApiResponse<Void>> deleteMember(Long memberId) {
         memberService.deleteMember(memberId);
         return ApiResponse.ok();
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<MemberResponse>> me(Long memberId) {
+        return ApiResponse.ok(memberService.getMember(memberId));
     }
 }
