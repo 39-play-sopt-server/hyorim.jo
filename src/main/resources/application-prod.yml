@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:mysql://mysql:3306/sopt_assignment
+    username: sopt_assignment
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+  jpa:
+    show-sql: false
+
+jwt:
+  refresh-cookie:
+    secure: true

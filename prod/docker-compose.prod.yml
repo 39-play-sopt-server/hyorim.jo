@@ -7,9 +7,7 @@ services:
     env_file:
       - .env
     environment:
-      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/sopt_assignment"
-      SPRING_DATASOURCE_USERNAME: "sopt_assignment"
-      SPRING_JPA_SHOW_SQL: "false"
+      SPRING_PROFILES_ACTIVE: "prod"
     mem_limit: 512m
     networks: [edge, db]
     labels:

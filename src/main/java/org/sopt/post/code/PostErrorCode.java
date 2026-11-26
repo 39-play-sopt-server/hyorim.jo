@@ -11,6 +11,7 @@ public enum PostErrorCode implements BaseErrorCode {
     POST_BOARD_EMPTY(HttpStatus.BAD_REQUEST, "POST4006", "게시판을 선택해 주세요."),
 
     POST_NOT_COMMUNITY_MEMBER(HttpStatus.FORBIDDEN, "POST4031", "해당 커뮤니티의 프로필만 글을 쓸 수 있습니다."),
+    POST_NOT_OWNED(HttpStatus.FORBIDDEN, "POST4032", "본인 게시글만 수정하거나 삭제할 수 있습니다."),
 
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4041", "존재하지 않는 게시글입니다.");
 

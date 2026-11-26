@@ -168,3 +168,33 @@ TCP 핸드셰이크가 성립된 이후 TLS 핸드셰이크가 시작됩니다.
 
 [TLS(Transport Layer Security)란 무엇인가요?](https://www.cloudflare.com/ko-kr/learning/ssl/transport-layer-security-tls/)
 [TLS(Transport Layer Security) - 토스](https://docs.tosspayments.com/resources/glossary/tls)
+
+---
+
+## 6차 과제
+
+### 세션 기반 인증 방식에서 사용자 인증이 발생하는 과정 
+1. **로그인 요청**: 클라이언트가 이메일과 비밀번호를 보냅니다.
+2. **세션 생성**: 서버가 비밀번호를 확인하고 `HttpSession`을 만들고 세션 저장소(서버 메모리, Redis 등)에 저장합니다.
+3. **응답**: `Set-Cookie`로 `JSESSIONID`(세션 ID)만 줍니다.
+4. **요청**: 서버는 세션 ID로 조회 및 인증합니다.
+5. **로그아웃**: 세션 ID를 지우면 끝~!
+
+- 장점: 서버가 세션을 지우기만 하면 됨
+- 단점: 분산 서버 환경에서 세션을 관리하기가 까다로움.  
+예를 들어 서버 A, B가 있으면 유저 a의 세션은 A 서버에 있기 때문에 로드 밸런서가 B로 보내버리면 B 서버엔 유저 정보가 없어서 로그인한 상태인데도 401이 뜨는 문제가 발생
+
+---
+
+### 토큰 기반 인증 방식에서 사용자 인증이 발생하는 과정 
+1. **로그인 요청**: 클라이언트가 이메일과 비밀번호를 보냅니다.
+2. **발급**: Access Token과 Refresh Token을 만들어서 클라이언트에게 줍니다. Refresh Token은 서버에도 저장합니다.
+3. **요청**: Access Token으로 요청을 인증합니다.
+4. **재발급**: Access Token이 만료되면 Refresh Token으로 인증 후 둘 다 새로 발급합니다.
+5. **로그아웃**: Refresh Token을 삭제하면 끝~! Access Token은 TTL 동안 유효해서 프론트에서 지워버린다.
+
+---
+
+### OAuth의 인증 프로세스
+오오쓰
+<img width="700" height="600" alt="image" src="https://developers.kakao.com/docs/_next/image?url=%2Fimg%2Flogin_process_ko.png&w=2040&q=75" />

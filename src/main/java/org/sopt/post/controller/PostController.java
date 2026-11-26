@@ -31,13 +31,13 @@ public class PostController implements PostApi {
     }
 
     @Override
-    public ResponseEntity<ApiResponse<PostResponse>> updatePost(Long postId, UpdatePostRequest request) {
-        return ApiResponse.ok(postService.updatePost(postId, request));
+    public ResponseEntity<ApiResponse<PostResponse>> updatePost(Long memberId, Long postId, UpdatePostRequest request) {
+        return ApiResponse.ok(postService.updatePost(memberId, postId, request));
     }
 
     @Override
-    public ResponseEntity<ApiResponse<Void>> deletePost(Long postId) {
-        postService.deletePost(postId);
+    public ResponseEntity<ApiResponse<Void>> deletePost(Long memberId, Long postId) {
+        postService.deletePost(memberId, postId);
         return ApiResponse.ok();
     }
 }
