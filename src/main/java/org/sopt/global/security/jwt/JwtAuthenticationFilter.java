@@ -1,6 +1,8 @@
 package org.sopt.global.security.jwt;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import org.sopt.global.security.TokenErrorCode;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +17,7 @@ import java.util.List;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    public static final String AUTH_ERROR_ATTRIBUTE = "authError";
     private static final String BEARER_PREFIX = "Bearer ";
 
     private final JwtProvider jwtProvider;
@@ -37,8 +40,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(memberId, null, List.of());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (ExpiredJwtException e) {
+                request.setAttribute(AUTH_ERROR_ATTRIBUTE, TokenErrorCode.TOKEN_EXPIRED);
             } catch (JwtException | IllegalArgumentException e) {
                 // 유효하지 않은 토큰이면 인증 정보를 저장하지 않음
+                request.setAttribute(AUTH_ERROR_ATTRIBUTE, TokenErrorCode.TOKEN_INVALID);
             }
         }
 
